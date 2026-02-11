@@ -131,7 +131,17 @@ class BackendMock:
                 "mod_acc_ratio": 0.98,
                 "cpu_usage": round(random.uniform(50.0, 98.0), 1),
                 "file_handles": random.randint(800, 3000),
-                "scenario": self.scenario
+                "scenario": self.scenario,
+                # Threat Intelligence Fields
+                "threat_details": {
+                    "source_process": "encryptor.exe",
+                    "pid": random.randint(1000, 9999),
+                    "origin_path": "C:\\Users\\Public\\Downloads",
+                    "parent_process": "winword.exe",
+                    "hash": "9fa1c3e8d2a45bc8...",
+                    "action_taken": "Process Terminated",
+                    "response_status": "TERMINATED"
+                }
             }
         
         self.current_metrics = res
