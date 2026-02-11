@@ -69,8 +69,9 @@ class FeatureEngine:
 
         events = list(self._buffer)
         elapsed = events[-1].timestamp - events[0].timestamp
-        # Avoid division by zero — treat sub-millisecond windows as 1 ms
-        elapsed = max(elapsed, 0.001)
+        # Avoid division by zero and single-event spikes
+        # (e.g. 1 event in 0.001s shouldn't be 1000 events/sec)
+        elapsed = max(elapsed, 1.0)
 
         modify_count = sum(1 for e in events if e.event_type == "modify")
         rename_events = [e for e in events if e.event_type == "rename"]
@@ -95,6 +96,11 @@ class FeatureEngine:
             "extension_change_rate": ext_change_rate,
             "entropy_change": entropy,
         }
+
+    @property
+    def event_count(self) -> int:
+        """Number of events currently in the sliding window."""
+        return len(self._buffer)
 
     def clear(self) -> None:
         """Reset the internal buffer."""

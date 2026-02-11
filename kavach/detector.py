@@ -40,16 +40,19 @@ class Detector:
         self,
         model_path: str | Path,
         window_size: float = 10.0,
-        threshold: float = 0.0,
+        threshold: float = -0.3,
+        min_events: int = 5,
     ) -> None:
         self.threshold = threshold
+        self.min_events = min_events
         self._engine = FeatureEngine(window_size=window_size)
         self._model = KavachModel()
         self._model.load_model(model_path)
         logger.info(
-            "Detector initialised (window=%.1fs, threshold=%.3f)",
+            "Detector initialised (window=%.1fs, threshold=%.3f, min_events=%d)",
             window_size,
             threshold,
+            min_events,
         )
 
     def process_event(self, event: FileEvent) -> dict[str, Any] | None:
@@ -59,8 +62,16 @@ class Detector:
             A dict with keys ``score``, ``features``, ``is_anomaly``, and
             ``pid`` if the event pushes the current window into anomaly
             territory.  Returns ``None`` otherwise.
+
+            Returns ``None`` silently if the window has fewer than
+            ``min_events`` events (not enough data to judge).
         """
         self._engine.add_event(event)
+
+        # Don't score until we have enough events for a meaningful pattern
+        if self._engine.event_count < self.min_events:
+            return None
+
         features = self._engine.extract_features()
         score = self._model.score(features)
         is_anomaly = score < self.threshold
