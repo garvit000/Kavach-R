@@ -1,2 +1,7 @@
 PySide6
 matplotlib
+scikit-learn
+joblib
+watchdog
+numpy
+psutil

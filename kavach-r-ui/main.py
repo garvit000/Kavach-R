@@ -1,35 +1,65 @@
+import argparse
+import os
 import sys
+
+# Ensure kavach-r-ui/ directory is first on sys.path so local imports
+# (dashboard, styles, backend_*) resolve here rather than the project root.
+_THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+if _THIS_DIR not in sys.path:
+    sys.path.insert(0, _THIS_DIR)
+
 from PySide6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, 
     QPushButton, QLabel, QStackedWidget, QListWidget, QFrame, QMessageBox
 )
 from PySide6.QtCore import Qt, QTimer, QThread, Signal
 
-from backend_mock import backend
+from backend_mock import BackendMock
+from backend_real import RealBackend, is_model_available
 from dashboard import DashboardWidget
 from styles import DARK_STYLE
+
+
+def _select_backend(use_mock: bool) -> object:
+    """Choose the backend based on CLI flag and model availability."""
+    if use_mock:
+        print("[Kavach-R] Running in MOCK mode (simulated data)")
+        return BackendMock()
+
+    if is_model_available():
+        print("[Kavach-R] Running in REAL mode (live ML detection)")
+        return RealBackend()
+    else:
+        print("[Kavach-R] WARNING: model.joblib not found — falling back to MOCK mode")
+        return BackendMock()
+
 
 class UpdateThread(QThread):
     data_received = Signal(float, dict, list)
 
-    def __init__(self):
+    def __init__(self, backend):
         super().__init__()
         self._running = True
+        self._backend = backend
 
     def run(self):
         while self._running:
-            if backend.scanning:
-                risk, metrics = backend.get_risk_and_metrics()
-                logs = backend.get_recent_logs()
+            if self._backend.scanning:
+                risk, metrics = self._backend.get_risk_and_metrics()
+                logs = self._backend.get_recent_logs()
                 self.data_received.emit(risk, metrics, logs)
             self.msleep(1000)
 
     def stop(self):
         self._running = False
 
+
 class MainWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self, backend):
         super().__init__()
+        self.backend = backend
+        self.is_mock = isinstance(backend, BackendMock)
+
         self.setWindowTitle("Kavach-R | Ransomware Early Warning")
         self.resize(1100, 750)
         self.setStyleSheet(DARK_STYLE)
@@ -47,8 +77,6 @@ class MainWindow(QMainWindow):
         sidebar_layout = QVBoxLayout(self.sidebar)
         sidebar_layout.setContentsMargins(10, 20, 10, 20)
         sidebar_layout.setSpacing(10)
-
-        # Removed logo from sidebar as it is now in the dashboard header
 
         self.btn_dashboard = QPushButton("  Dashboard")
         self.btn_dashboard.setObjectName("SidebarBtn")
@@ -69,27 +97,35 @@ class MainWindow(QMainWindow):
         line1.setFixedHeight(1)
         sidebar_layout.addWidget(line1)
 
-        # Simulation Controls
-        # Move buttons downward with spacing
+        # Simulation Controls (only for MOCK mode)
         sim_container = QWidget()
         sim_layout = QVBoxLayout(sim_container)
-        sim_layout.setContentsMargins(0, 5, 0, 0) # Reduced top margin from 20px to 5px
+        sim_layout.setContentsMargins(0, 5, 0, 0)
         sim_layout.setSpacing(8)
 
-        sim_label = QLabel("Threat Simulation")
-        sim_label.setStyleSheet("font-size: 11px; color: #9DA7B3; font-weight: bold; margin-bottom: 8px; letter-spacing: 0.5px; text-transform: uppercase;")
-        sim_layout.addWidget(sim_label)
+        if self.is_mock:
+            sim_label = QLabel("Threat Simulation")
+            sim_label.setStyleSheet("font-size: 11px; color: #9DA7B3; font-weight: bold; margin-bottom: 8px; letter-spacing: 0.5px; text-transform: uppercase;")
+            sim_layout.addWidget(sim_label)
 
-        self.btn_idle = QPushButton("🔵  Normal Environment")
-        self.btn_idle.clicked.connect(lambda: backend.set_scenario("IDLE"))
-        self.btn_idle.setStyleSheet("background-color: #2563EB; border: none; text-align: left; padding-left: 15px;")
-        sim_layout.addWidget(self.btn_idle)
+            self.btn_idle = QPushButton("🔵  Normal Environment")
+            self.btn_idle.clicked.connect(lambda: self.backend.set_scenario("IDLE"))
+            self.btn_idle.setStyleSheet("background-color: #2563EB; border: none; text-align: left; padding-left: 15px;")
+            sim_layout.addWidget(self.btn_idle)
 
-        self.btn_attack = QPushButton("🔴  Simulate Ransomware")
-        self.btn_attack.clicked.connect(lambda: backend.set_scenario("ATTACK"))
-        self.btn_attack.setStyleSheet("background-color: #DC2626; border: none; font-weight: bold; text-align: left; padding-left: 15px;")
-        sim_layout.addWidget(self.btn_attack)
-        
+            self.btn_attack = QPushButton("🔴  Simulate Ransomware")
+            self.btn_attack.clicked.connect(lambda: self.backend.set_scenario("ATTACK"))
+            self.btn_attack.setStyleSheet("background-color: #DC2626; border: none; font-weight: bold; text-align: left; padding-left: 15px;")
+            sim_layout.addWidget(self.btn_attack)
+        else:
+            mode_label = QLabel("Live Detection")
+            mode_label.setStyleSheet("font-size: 11px; color: #9DA7B3; font-weight: bold; margin-bottom: 8px; letter-spacing: 0.5px; text-transform: uppercase;")
+            sim_layout.addWidget(mode_label)
+
+            mode_info = QLabel("🟢  Real-time ML Monitoring")
+            mode_info.setStyleSheet("color: #22C55E; font-size: 12px; padding: 8px 12px;")
+            sim_layout.addWidget(mode_info)
+
         sidebar_layout.addWidget(sim_container)
 
         # Divider 2
@@ -134,7 +170,7 @@ class MainWindow(QMainWindow):
         self.main_layout.addWidget(self.content_stack)
 
         # Update Thread
-        self.update_thread = UpdateThread()
+        self.update_thread = UpdateThread(self.backend)
         self.update_thread.data_received.connect(self.on_data_received)
         self.update_thread.start()
 
@@ -148,27 +184,27 @@ class MainWindow(QMainWindow):
         self.btn_logs.setStyle(self.btn_logs.style())
 
     def toggle_scan(self):
-        if not backend.scanning:
-            backend.start_scan()
+        if not self.backend.scanning:
+            self.backend.start_scan()
             self.btn_scan.setText("STOP SCAN")
             self.btn_scan.setStyleSheet("background-color: #DC2626; color: white;")
         else:
-            backend.stop_scan()
+            self.backend.stop_scan()
             self.btn_scan.setText("START SCAN")
             self.btn_scan.setStyleSheet("") # Revert to stylesheet (Green)
             self.dashboard_page.reset_ui()
             self.alert_shown = False
             
             # Manually update logs to show "Scan Stopped"
-            logs = backend.get_recent_logs()
-            self.log_list.clear() # Clear main logs list
-            self.log_list.addItems(logs[::-1]) # Add updated logs
-            self.dashboard_page.incident_panel.update_logs(logs) # Update dashboard panel
+            logs = self.backend.get_recent_logs()
+            self.log_list.clear()
+            self.log_list.addItems(logs[::-1])
+            self.dashboard_page.incident_panel.update_logs(logs)
 
     def clear_logs(self):
-        backend.clear_logs()
-        self.log_list.clear() # Clear main logs page
-        self.dashboard_page.incident_panel.update_logs([]) # Clear dashboard incident panel
+        self.backend.clear_logs()
+        self.log_list.clear()
+        self.dashboard_page.incident_panel.update_logs([])
 
     def on_data_received(self, risk, metrics, logs):
         self.dashboard_page.update_ui(risk, metrics, logs)
@@ -179,22 +215,36 @@ class MainWindow(QMainWindow):
 
         scenario = metrics.get("scenario", "IDLE")
 
-        # Check for Critical Alert - ONLY trigger on actual attack scenario
+        # Check for Critical Alert
         if scenario == "ATTACK" and risk > 0.8 and not self.alert_shown:
             self.alert_shown = True
             QMessageBox.critical(
                 self, 
                 "THREAT DETECTED", 
-                "Potential Ransomware Behavior Detected.\nHigh-risk process activity identified.\n\nActions taken: Process activity suspended."
+                "Potential Ransomware Behavior Detected.\nHigh-risk process activity identified.\n\nActions taken: Process activity flagged."
             )
 
     def closeEvent(self, event):
+        # Stop the backend if scanning
+        if self.backend.scanning:
+            self.backend.stop_scan()
         self.update_thread.stop()
         self.update_thread.wait()
         event.accept()
 
-if __name__ == "__main__":
+
+def main():
+    parser = argparse.ArgumentParser(description="Kavach-R Dashboard")
+    parser.add_argument("--mock", action="store_true", help="Use mock backend (simulated data)")
+    args = parser.parse_args()
+
+    backend = _select_backend(use_mock=args.mock)
+
     app = QApplication(sys.argv)
-    window = MainWindow()
+    window = MainWindow(backend)
     window.show()
     sys.exit(app.exec())
+
+
+if __name__ == "__main__":
+    main()
