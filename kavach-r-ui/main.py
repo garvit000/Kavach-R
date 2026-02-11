@@ -16,9 +16,11 @@ _PROJECT_ROOT = os.path.dirname(_THIS_DIR)
 from PySide6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
     QPushButton, QLabel, QStackedWidget, QListWidget, QFrame, QMessageBox,
-    QSpinBox, QProgressBar, QTextEdit
+    QSpinBox, QProgressBar, QTextEdit, QTableWidget, QTableWidgetItem,
+    QHeaderView, QAbstractItemView
 )
 from PySide6.QtCore import Qt, QTimer, QThread, Signal
+from PySide6.QtGui import QColor
 
 from backend_mock import BackendMock
 from backend_real import RealBackend, is_model_available
@@ -36,10 +38,9 @@ def _select_backend(use_mock: bool) -> object:
 
     if is_model_available():
         print("[Kavach-R] Running in REAL mode (live ML detection)")
-        return RealBackend()
     else:
-        print("[Kavach-R] WARNING: model.joblib not found — falling back to MOCK mode")
-        return BackendMock()
+        print("[Kavach-R] Running in REAL mode (model not trained yet — use Train Model)")
+    return RealBackend()
 
 
 class TrainingWorker(QThread):
@@ -207,6 +208,12 @@ class MainWindow(QMainWindow):
             sidebar_layout.addWidget(self.btn_train)
             self.nav_buttons.append(self.btn_train)
 
+            self.btn_processes = QPushButton("  Processes")
+            self.btn_processes.setObjectName("SidebarBtn")
+            self.btn_processes.clicked.connect(lambda: self.switch_page(3))
+            sidebar_layout.addWidget(self.btn_processes)
+            self.nav_buttons.append(self.btn_processes)
+
         # Divider 1
         line1 = QFrame()
         line1.setFrameShape(QFrame.HLine)
@@ -288,6 +295,10 @@ class MainWindow(QMainWindow):
         # Page 2: Training (real mode only)
         if not self.is_mock:
             self._build_training_page()
+
+        # Page 3: Flagged Processes (real mode only)
+        if not self.is_mock:
+            self._build_processes_page()
 
         self.main_layout.addWidget(self.content_stack)
 
@@ -446,6 +457,132 @@ class MainWindow(QMainWindow):
         else:
             self.train_log.append(f"\n❌ Training failed: {msg}")
 
+    def _build_processes_page(self):
+        """Build the Flagged Processes page (page index 3)."""
+        self.processes_page = QWidget()
+        p_layout = QVBoxLayout(self.processes_page)
+        p_layout.setContentsMargins(24, 24, 24, 24)
+        p_layout.setSpacing(16)
+
+        # Header
+        header = QLabel("🔍 FLAGGED PROCESSES")
+        header.setStyleSheet("font-size: 20px; font-weight: bold; color: #E6EDF3;")
+        p_layout.addWidget(header)
+
+        desc = QLabel(
+            "Processes flagged by the anomaly detection engine during scanning.\n"
+            "Each row shows a process whose file activity triggered the ML model."
+        )
+        desc.setStyleSheet("color: #9DA7B3; font-size: 13px;")
+        desc.setWordWrap(True)
+        p_layout.addWidget(desc)
+
+        # Process count label
+        self.process_count_label = QLabel("No flagged processes yet.")
+        self.process_count_label.setStyleSheet("color: #9DA7B3; font-size: 12px; padding: 4px 0;")
+        p_layout.addWidget(self.process_count_label)
+
+        # Table
+        self.process_table = QTableWidget()
+        self.process_table.setColumnCount(7)
+        self.process_table.setHorizontalHeaderLabels([
+            "Time", "PID", "Process Name", "Path", "Score", "Risk", "Status"
+        ])
+        self.process_table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.process_table.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.process_table.setAlternatingRowColors(True)
+        self.process_table.verticalHeader().setVisible(False)
+
+        # Column widths
+        header_view = self.process_table.horizontalHeader()
+        header_view.setSectionResizeMode(0, QHeaderView.ResizeToContents)  # Time
+        header_view.setSectionResizeMode(1, QHeaderView.ResizeToContents)  # PID
+        header_view.setSectionResizeMode(2, QHeaderView.Interactive)       # Name
+        header_view.setSectionResizeMode(3, QHeaderView.Stretch)           # Path
+        header_view.setSectionResizeMode(4, QHeaderView.ResizeToContents)  # Score
+        header_view.setSectionResizeMode(5, QHeaderView.ResizeToContents)  # Risk
+        header_view.setSectionResizeMode(6, QHeaderView.ResizeToContents)  # Status
+
+        self.process_table.setStyleSheet("""
+            QTableWidget {
+                background-color: #11141A; border: 1px solid #2A2F3A;
+                border-radius: 8px; color: #E6EDF3; gridline-color: #2A2F3A;
+                font-size: 12px;
+            }
+            QTableWidget::item { padding: 6px 10px; }
+            QTableWidget::item:selected { background-color: #1E3A5F; }
+            QHeaderView::section {
+                background-color: #1A1D24; color: #9DA7B3;
+                font-weight: bold; font-size: 11px; padding: 8px;
+                border: none; border-bottom: 1px solid #2A2F3A;
+            }
+            QTableWidget::item:alternate { background-color: #151820; }
+        """)
+
+        p_layout.addWidget(self.process_table)
+
+        # Clear button
+        btn_clear_proc = QPushButton("Clear Flagged Processes")
+        btn_clear_proc.setStyleSheet("""
+            QPushButton {
+                background-color: #6B7280; color: white; border: none;
+                padding: 10px; border-radius: 6px; font-size: 13px;
+                max-width: 200px;
+            }
+            QPushButton:hover { background-color: #4B5563; }
+        """)
+        btn_clear_proc.clicked.connect(self._clear_flagged_processes)
+        p_layout.addWidget(btn_clear_proc)
+
+        self.content_stack.addWidget(self.processes_page)
+
+    def _refresh_processes_table(self):
+        """Update the processes table from backend data."""
+        if not hasattr(self, "process_table"):
+            return
+        if not hasattr(self.backend, "get_flagged_processes"):
+            return
+
+        records = self.backend.get_flagged_processes()
+        self.process_table.setRowCount(len(records))
+        self.process_count_label.setText(
+            f"{len(records)} flagged process{'es' if len(records) != 1 else ''}"
+            if records else "No flagged processes yet."
+        )
+
+        for row, rec in enumerate(reversed(records)):  # newest first
+            risk = rec.get("risk", 0)
+
+            # Pick row color based on risk
+            if risk >= 0.7:
+                row_color = QColor(127, 29, 29, 80)   # dark red
+            elif risk >= 0.4:
+                row_color = QColor(120, 53, 15, 80)    # dark amber
+            else:
+                row_color = QColor(20, 83, 45, 60)     # dark green
+
+            items = [
+                rec.get("timestamp", ""),
+                str(rec.get("pid", "N/A")),
+                rec.get("name", "Unknown"),
+                rec.get("exe", "N/A"),
+                str(rec.get("score", "")),
+                f"{risk:.2f}",
+                rec.get("status", "Flagged"),
+            ]
+            for col, text in enumerate(items):
+                item = QTableWidgetItem(text)
+                item.setBackground(row_color)
+                self.process_table.setItem(row, col, item)
+
+    def _clear_flagged_processes(self):
+        """Clear the flagged processes list."""
+        if hasattr(self.backend, "_flagged_processes"):
+            self.backend._flagged_processes.clear()
+        if hasattr(self, "process_table"):
+            self.process_table.setRowCount(0)
+            self.process_count_label.setText("No flagged processes yet.")
+
     def switch_page(self, index):
         self.content_stack.setCurrentIndex(index)
         for i, btn in enumerate(self.nav_buttons):
@@ -481,6 +618,9 @@ class MainWindow(QMainWindow):
         # Update logs list (main logs page)
         self.log_list.clear()
         self.log_list.addItems(logs[::-1])
+
+        # Refresh the processes table (real mode only)
+        self._refresh_processes_table()
 
         scenario = metrics.get("scenario", "IDLE")
 
