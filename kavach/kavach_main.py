@@ -100,8 +100,11 @@ def cmd_train(args: argparse.Namespace) -> None:
         samples = _generate_synthetic_normal(count=200)
 
     if not samples:
-        logger.error("No samples collected. Cannot train.")
-        sys.exit(1)
+        logger.warning(
+            "No live samples collected — falling back to synthetic normal "
+            "data for training."
+        )
+        samples = _generate_synthetic_normal(count=200)
 
     # Train & save
     model = KavachModel(contamination=args.contamination)
@@ -177,22 +180,35 @@ def cmd_detect(args: argparse.Namespace) -> None:
 def _generate_synthetic_normal(count: int = 200) -> list[dict[str, float]]:
     """Create synthetic 'normal' feature vectors for initial model training.
 
-    These mimic low-activity desktop file operations.
+    These mimic a range of desktop file operations including idle periods,
+    light editing, and moderate activity.
     """
     import random
 
     rng = random.Random(42)
     samples: list[dict[str, float]] = []
     for _ in range(count):
-        samples.append(
-            {
-                "files_modified_per_sec": rng.uniform(0.1, 2.0),
-                "rename_rate": rng.uniform(0.0, 0.3),
-                "unique_files_touched": rng.uniform(1, 10),
-                "extension_change_rate": rng.uniform(0.0, 0.05),
-                "entropy_change": rng.uniform(3.5, 5.5),
-            }
-        )
+        # 30% chance of idle (near-zero activity)
+        if rng.random() < 0.3:
+            samples.append(
+                {
+                    "files_modified_per_sec": rng.uniform(0.0, 0.1),
+                    "rename_rate": 0.0,
+                    "unique_files_touched": rng.uniform(0, 2),
+                    "extension_change_rate": 0.0,
+                    "entropy_change": rng.uniform(0.0, 5.0),
+                }
+            )
+        else:
+            samples.append(
+                {
+                    "files_modified_per_sec": rng.uniform(0.0, 5.0),
+                    "rename_rate": rng.uniform(0.0, 0.5),
+                    "unique_files_touched": rng.uniform(1, 15),
+                    "extension_change_rate": rng.uniform(0.0, 0.05),
+                    "entropy_change": rng.uniform(0.0, 6.0),
+                }
+            )
     return samples
 
 
@@ -256,8 +272,8 @@ def build_parser() -> argparse.ArgumentParser:
     detect_p.add_argument(
         "--threshold",
         type=float,
-        default=0.0,
-        help="Anomaly score threshold (default: 0.0).",
+        default=-0.3,
+        help="Anomaly score threshold (default: -0.3). Lower = fewer alerts.",
     )
     detect_p.add_argument(
         "--watch-paths",
