@@ -1,6 +1,9 @@
 import argparse
+import logging
 import os
 import sys
+import time
+from pathlib import Path
 
 # Ensure kavach-r-ui/ directory is first on sys.path so local imports
 # (dashboard, styles, backend_*) resolve here rather than the project root.
@@ -8,9 +11,12 @@ _THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 if _THIS_DIR not in sys.path:
     sys.path.insert(0, _THIS_DIR)
 
+_PROJECT_ROOT = os.path.dirname(_THIS_DIR)
+
 from PySide6.QtWidgets import (
-    QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, 
-    QPushButton, QLabel, QStackedWidget, QListWidget, QFrame, QMessageBox
+    QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
+    QPushButton, QLabel, QStackedWidget, QListWidget, QFrame, QMessageBox,
+    QSpinBox, QProgressBar, QTextEdit
 )
 from PySide6.QtCore import Qt, QTimer, QThread, Signal
 
@@ -18,6 +24,8 @@ from backend_mock import BackendMock
 from backend_real import RealBackend, is_model_available
 from dashboard import DashboardWidget
 from styles import DARK_STYLE
+
+logger = logging.getLogger("kavach.ui")
 
 
 def _select_backend(use_mock: bool) -> object:
@@ -32,6 +40,105 @@ def _select_backend(use_mock: bool) -> object:
     else:
         print("[Kavach-R] WARNING: model.joblib not found — falling back to MOCK mode")
         return BackendMock()
+
+
+class TrainingWorker(QThread):
+    """Background thread that trains the anomaly detection model."""
+    progress = Signal(str)        # log messages
+    finished = Signal(bool, str)  # (success, message)
+
+    def __init__(self, duration: float, model_path: str):
+        super().__init__()
+        self.duration = duration
+        self.model_path = model_path
+
+    def run(self):
+        try:
+            # Ensure project root is on path for kavach imports
+            if _PROJECT_ROOT not in sys.path:
+                sys.path.append(_PROJECT_ROOT)
+
+            from kavach.feature_engine import FeatureEngine
+            from kavach.model import KavachModel
+            from kavach.events import FileEvent
+
+            engine = FeatureEngine(window_size=10.0)
+            samples = []
+
+            self.progress.emit("Starting model training...")
+            self.progress.emit(f"Collecting {self.duration:.0f}s of baseline activity...")
+
+            # Try to use the real monitor
+            try:
+                from kavach.monitor import start as monitor_start, stop as monitor_stop
+
+                collecting = True
+
+                def _on_event(event: FileEvent):
+                    if not collecting:
+                        return
+                    engine.add_event(event)
+                    features = engine.extract_features()
+                    samples.append(features)
+
+                monitor_start(callback=_on_event)
+                self.progress.emit("Monitor started. Collecting normal activity...")
+
+                # Collect for the specified duration, emitting progress updates
+                start_time = time.time()
+                while time.time() - start_time < self.duration:
+                    elapsed = time.time() - start_time
+                    pct = int((elapsed / self.duration) * 100)
+                    self.progress.emit(f"Collecting... {pct}% ({len(samples)} samples)")
+                    time.sleep(2)
+
+                collecting = False
+                monitor_stop()
+                self.progress.emit(f"Collection done. {len(samples)} samples captured.")
+
+            except ImportError:
+                self.progress.emit("Monitor not available — using synthetic data.")
+                samples = self._generate_synthetic(200)
+
+            if not samples:
+                self.progress.emit("No live samples — using synthetic data.")
+                samples = self._generate_synthetic(200)
+
+            # Train the model
+            self.progress.emit("Training IsolationForest model...")
+            model = KavachModel(contamination=0.05)
+            model.train(samples)
+            model.save_model(self.model_path)
+            self.progress.emit(f"Model saved to {self.model_path}")
+            self.finished.emit(True, f"Training complete! {len(samples)} samples. Model saved.")
+
+        except Exception as e:
+            self.progress.emit(f"ERROR: {e}")
+            self.finished.emit(False, str(e))
+
+    @staticmethod
+    def _generate_synthetic(count=200):
+        import random
+        rng = random.Random(42)
+        samples = []
+        for _ in range(count):
+            if rng.random() < 0.3:
+                samples.append({
+                    "files_modified_per_sec": rng.uniform(0.0, 0.1),
+                    "rename_rate": 0.0,
+                    "unique_files_touched": rng.uniform(0, 2),
+                    "extension_change_rate": 0.0,
+                    "entropy_change": rng.uniform(0.0, 5.0),
+                })
+            else:
+                samples.append({
+                    "files_modified_per_sec": rng.uniform(0.0, 5.0),
+                    "rename_rate": rng.uniform(0.0, 0.5),
+                    "unique_files_touched": rng.uniform(1, 15),
+                    "extension_change_rate": rng.uniform(0.0, 0.05),
+                    "entropy_change": rng.uniform(0.0, 6.0),
+                })
+        return samples
 
 
 class UpdateThread(QThread):
@@ -78,16 +185,27 @@ class MainWindow(QMainWindow):
         sidebar_layout.setContentsMargins(10, 20, 10, 20)
         sidebar_layout.setSpacing(10)
 
+        self.nav_buttons = []
+
         self.btn_dashboard = QPushButton("  Dashboard")
         self.btn_dashboard.setObjectName("SidebarBtn")
         self.btn_dashboard.setProperty("active", "true")
         self.btn_dashboard.clicked.connect(lambda: self.switch_page(0))
         sidebar_layout.addWidget(self.btn_dashboard)
+        self.nav_buttons.append(self.btn_dashboard)
 
         self.btn_logs = QPushButton("  System Logs")
         self.btn_logs.setObjectName("SidebarBtn")
         self.btn_logs.clicked.connect(lambda: self.switch_page(1))
         sidebar_layout.addWidget(self.btn_logs)
+        self.nav_buttons.append(self.btn_logs)
+
+        if not self.is_mock:
+            self.btn_train = QPushButton("  Train Model")
+            self.btn_train.setObjectName("SidebarBtn")
+            self.btn_train.clicked.connect(lambda: self.switch_page(2))
+            sidebar_layout.addWidget(self.btn_train)
+            self.nav_buttons.append(self.btn_train)
 
         # Divider 1
         line1 = QFrame()
@@ -153,12 +271,12 @@ class MainWindow(QMainWindow):
 
         # Right Side Content
         self.content_stack = QStackedWidget()
-        
-        # Dashboard Page
+
+        # Page 0: Dashboard
         self.dashboard_page = DashboardWidget()
         self.content_stack.addWidget(self.dashboard_page)
 
-        # Logs Page
+        # Page 1: Logs
         self.logs_page = QWidget()
         logs_layout = QVBoxLayout(self.logs_page)
         logs_layout.setContentsMargins(20, 20, 20, 20)
@@ -166,6 +284,10 @@ class MainWindow(QMainWindow):
         self.log_list = QListWidget()
         logs_layout.addWidget(self.log_list)
         self.content_stack.addWidget(self.logs_page)
+
+        # Page 2: Training (real mode only)
+        if not self.is_mock:
+            self._build_training_page()
 
         self.main_layout.addWidget(self.content_stack)
 
@@ -176,12 +298,159 @@ class MainWindow(QMainWindow):
 
         self.alert_shown = False
 
+    def _build_training_page(self):
+        """Build the Model Training page (page index 2)."""
+        self.training_page = QWidget()
+        t_layout = QVBoxLayout(self.training_page)
+        t_layout.setContentsMargins(24, 24, 24, 24)
+        t_layout.setSpacing(16)
+
+        # Header
+        header = QLabel("🧠 MODEL TRAINING")
+        header.setStyleSheet("font-size: 20px; font-weight: bold; color: #E6EDF3;")
+        t_layout.addWidget(header)
+
+        desc = QLabel(
+            "Train the anomaly detection model on your system's normal behavior.\n"
+            "During training, use your computer normally so the model learns\n"
+            "your typical file activity patterns."
+        )
+        desc.setStyleSheet("color: #9DA7B3; font-size: 13px; line-height: 1.5;")
+        desc.setWordWrap(True)
+        t_layout.addWidget(desc)
+
+        # Duration control
+        dur_container = QHBoxLayout()
+        dur_label = QLabel("Training Duration (seconds):")
+        dur_label.setStyleSheet("color: #E6EDF3; font-size: 13px;")
+        dur_container.addWidget(dur_label)
+
+        self.train_duration_spin = QSpinBox()
+        self.train_duration_spin.setRange(10, 300)
+        self.train_duration_spin.setValue(60)
+        self.train_duration_spin.setSuffix(" s")
+        self.train_duration_spin.setStyleSheet("""
+            QSpinBox {
+                background-color: #1A1D24; border: 1px solid #2A2F3A;
+                border-radius: 6px; padding: 8px 12px; color: #E6EDF3;
+                font-size: 14px; min-width: 100px;
+            }
+            QSpinBox::up-button, QSpinBox::down-button {
+                background-color: #2A2F3A; border: none; width: 20px;
+            }
+        """)
+        dur_container.addWidget(self.train_duration_spin)
+        dur_container.addStretch()
+        t_layout.addLayout(dur_container)
+
+        # Train button
+        self.btn_start_training = QPushButton("🚀  START TRAINING")
+        self.btn_start_training.setStyleSheet("""
+            QPushButton {
+                background-color: #7C3AED; color: white; border: none;
+                font-size: 14px; font-weight: bold; padding: 14px;
+                border-radius: 8px;
+            }
+            QPushButton:hover { background-color: #6D28D9; }
+            QPushButton:disabled { background-color: #4B5563; color: #9DA7B3; }
+        """)
+        self.btn_start_training.clicked.connect(self.start_training)
+        t_layout.addWidget(self.btn_start_training)
+
+        # Progress bar
+        self.train_progress = QProgressBar()
+        self.train_progress.setRange(0, 0)  # indeterminate
+        self.train_progress.setVisible(False)
+        self.train_progress.setStyleSheet("""
+            QProgressBar {
+                background-color: #1A1D24; border: 1px solid #2A2F3A;
+                border-radius: 6px; height: 8px; text-align: center;
+            }
+            QProgressBar::chunk {
+                background-color: #7C3AED; border-radius: 4px;
+            }
+        """)
+        t_layout.addWidget(self.train_progress)
+
+        # Training log output
+        self.train_log = QTextEdit()
+        self.train_log.setReadOnly(True)
+        self.train_log.setStyleSheet("""
+            QTextEdit {
+                background-color: #11141A; border: 1px solid #2A2F3A;
+                border-radius: 8px; color: #9DA7B3; padding: 12px;
+                font-family: Consolas, monospace; font-size: 12px;
+            }
+        """)
+        self.train_log.setPlaceholderText("Training output will appear here...")
+        t_layout.addWidget(self.train_log)
+
+        # Model status
+        model_path = os.path.join(_PROJECT_ROOT, "model.joblib")
+        if os.path.exists(model_path):
+            mod_time = time.strftime("%Y-%m-%d %H:%M", time.localtime(os.path.getmtime(model_path)))
+            status_text = f"✅ Current model: model.joblib (last trained: {mod_time})"
+            status_color = "#22C55E"
+        else:
+            status_text = "⚠️ No trained model found. Train one before starting detection."
+            status_color = "#F59E0B"
+
+        self.model_status_label = QLabel(status_text)
+        self.model_status_label.setStyleSheet(f"color: {status_color}; font-size: 12px; padding: 8px;")
+        t_layout.addWidget(self.model_status_label)
+
+        t_layout.addStretch()
+        self.content_stack.addWidget(self.training_page)
+        self._training_worker = None
+
+    def start_training(self):
+        """Launch the training worker thread."""
+        duration = self.train_duration_spin.value()
+        model_path = os.path.join(_PROJECT_ROOT, "model.joblib")
+
+        # Disable controls during training
+        self.btn_start_training.setEnabled(False)
+        self.btn_start_training.setText("⏳  TRAINING...")
+        self.train_duration_spin.setEnabled(False)
+        self.train_progress.setVisible(True)
+        self.train_log.clear()
+        self.train_log.append(f"[Training] Duration: {duration}s")
+        self.train_log.append(f"[Training] Output: {model_path}")
+        self.train_log.append("")
+
+        self._training_worker = TrainingWorker(duration, model_path)
+        self._training_worker.progress.connect(self._on_training_progress)
+        self._training_worker.finished.connect(self._on_training_finished)
+        self._training_worker.start()
+
+    def _on_training_progress(self, msg):
+        self.train_log.append(f"  {msg}")
+
+    def _on_training_finished(self, success, msg):
+        self.btn_start_training.setEnabled(True)
+        self.btn_start_training.setText("🚀  START TRAINING")
+        self.train_duration_spin.setEnabled(True)
+        self.train_progress.setVisible(False)
+
+        if success:
+            self.train_log.append(f"\n✅ {msg}")
+            model_path = os.path.join(_PROJECT_ROOT, "model.joblib")
+            mod_time = time.strftime("%Y-%m-%d %H:%M", time.localtime(os.path.getmtime(model_path)))
+            self.model_status_label.setText(f"✅ Current model: model.joblib (last trained: {mod_time})")
+            self.model_status_label.setStyleSheet("color: #22C55E; font-size: 12px; padding: 8px;")
+
+            # Reload backend with new model
+            if isinstance(self.backend, RealBackend):
+                self.backend.model_path = Path(model_path)
+                self.train_log.append("Model will be used on next scan start.")
+        else:
+            self.train_log.append(f"\n❌ Training failed: {msg}")
+
     def switch_page(self, index):
         self.content_stack.setCurrentIndex(index)
-        self.btn_dashboard.setProperty("active", "true" if index == 0 else "false")
-        self.btn_logs.setProperty("active", "true" if index == 1 else "false")
-        self.btn_dashboard.setStyle(self.btn_dashboard.style())
-        self.btn_logs.setStyle(self.btn_logs.style())
+        for i, btn in enumerate(self.nav_buttons):
+            btn.setProperty("active", "true" if i == index else "false")
+            btn.setStyle(btn.style())
 
     def toggle_scan(self):
         if not self.backend.scanning:

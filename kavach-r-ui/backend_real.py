@@ -59,6 +59,8 @@ class RealBackend:
         self._last_alert: dict | None = None
         self._event_count = 0
         self._last_score = 0.0
+        self._smoothed_risk = 0.0  # EMA-smoothed risk score
+        self._last_log_time = 0.0  # Throttle anomaly log spam
 
     # ------------------------------------------------------------------
     # Public API (same interface as BackendMock)
@@ -90,7 +92,9 @@ class RealBackend:
             self.scanning = True
             self._event_count = 0
             self._last_score = 0.0
+            self._smoothed_risk = 0.0
             self._last_alert = None
+            self._last_log_time = 0.0
             self.add_log("Real-time scan started. Behavioral monitoring active.")
 
             # Decide what to watch
@@ -118,6 +122,7 @@ class RealBackend:
 
         self.scanning = False
         self.risk_score = 0.0
+        self._smoothed_risk = 0.0
         self._detector = None
         self._feature_engine = None
         self._last_alert = None
@@ -155,6 +160,9 @@ class RealBackend:
     # Internal: event callback from the monitor
     # ------------------------------------------------------------------
 
+    _EMA_ALPHA = 0.3         # Smoothing factor (lower = smoother)
+    _LOG_THROTTLE_SEC = 5.0  # Min seconds between anomaly log lines
+
     def _on_event(self, event: FileEvent) -> None:
         """Called by kavach.monitor for every file-system event."""
         if not self.scanning or self._detector is None:
@@ -172,29 +180,44 @@ class RealBackend:
 
         with self._lock:
             if alert is not None:
-                # Detector returned an anomaly
                 raw_score = alert["score"]  # negative = anomalous (sklearn)
-                # Map to 0-1 scale:  score of -0.5 → risk 1.0,  score of +0.5 → risk 0.0
-                self.risk_score = round(max(0.0, min(1.0, 0.5 - raw_score)), 4)
                 self._last_score = raw_score
-                self._last_alert = alert
 
-                pid = alert.get("pid")
-                self.logs.append(
-                    f"[{datetime.now().strftime('%H:%M:%S')}] "
-                    f"🚨 ANOMALY pid={pid}  score={raw_score:.4f}  risk={self.risk_score:.4f}"
-                )
+                # Map to 0-1:  threshold (-0.3) → risk ~0.6,  score -0.8 → risk ~1.0
+                # Only scores below threshold are truly dangerous
+                instant_risk = max(0.0, min(1.0, (self.threshold - raw_score + 0.5)))
             else:
-                # No anomaly — score drifts back toward safe
-                # Use the detector's internal engine to get the latest score
+                # No anomaly — compute current score for display only
                 if self._detector._engine.event_count >= self._detector.min_events:
                     features = self._detector._engine.extract_features()
                     raw_score = self._detector._model.score(features)
-                    self.risk_score = round(max(0.0, min(1.0, 0.5 - raw_score)), 4)
                     self._last_score = raw_score
+                    # Score above threshold = safe, map to low risk
+                    if raw_score >= self.threshold:
+                        instant_risk = max(0.0, 0.15 - raw_score * 0.1)
+                    else:
+                        instant_risk = max(0.0, min(1.0, (self.threshold - raw_score + 0.5)))
                 else:
-                    # Not enough events yet — keep low risk
-                    self.risk_score = max(0.0, self.risk_score - 0.01)
+                    instant_risk = 0.0
+
+            # Apply EMA smoothing to avoid noisy spikes
+            self._smoothed_risk = (
+                self._EMA_ALPHA * instant_risk
+                + (1 - self._EMA_ALPHA) * self._smoothed_risk
+            )
+            self.risk_score = round(max(0.0, min(1.0, self._smoothed_risk)), 4)
+
+            # Log anomalies with throttling (max 1 per _LOG_THROTTLE_SEC)
+            if alert is not None:
+                self._last_alert = alert
+                now = time.time()
+                if now - self._last_log_time >= self._LOG_THROTTLE_SEC:
+                    self._last_log_time = now
+                    pid = alert.get("pid")
+                    self.logs.append(
+                        f"[{datetime.now().strftime('%H:%M:%S')}] "
+                        f"⚠ Anomaly detected  score={raw_score:.4f}  risk={self.risk_score:.2f}"
+                    )
 
     # ------------------------------------------------------------------
     # Internal: metrics construction
