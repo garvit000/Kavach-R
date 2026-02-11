@@ -48,10 +48,7 @@ class MainWindow(QMainWindow):
         sidebar_layout.setContentsMargins(10, 20, 10, 20)
         sidebar_layout.setSpacing(10)
 
-        app_logo = QLabel("KAVACH-R")
-        app_logo.setStyleSheet("font-size: 24px; font-weight: bold; color: #0078D4; margin-bottom: 20px;")
-        app_logo.setAlignment(Qt.AlignCenter)
-        sidebar_layout.addWidget(app_logo)
+        # Removed logo from sidebar as it is now in the dashboard header
 
         self.btn_dashboard = QPushButton("  Dashboard")
         self.btn_dashboard.setObjectName("SidebarBtn")
@@ -64,31 +61,44 @@ class MainWindow(QMainWindow):
         self.btn_logs.clicked.connect(lambda: self.switch_page(1))
         sidebar_layout.addWidget(self.btn_logs)
 
-        sidebar_layout.addStretch()
+        # Divider 1
+        line1 = QFrame()
+        line1.setFrameShape(QFrame.HLine)
+        line1.setFrameShadow(QFrame.Sunken)
+        line1.setStyleSheet("background-color: #ffffff; margin-top: 16px; margin-bottom: 16px;")
+        line1.setFixedHeight(1)
+        sidebar_layout.addWidget(line1)
 
         # Simulation Controls
-        sim_label = QLabel("SIMULATION CONTROLS")
-        sim_label.setStyleSheet("font-size: 10px; color: #555555; font-weight: bold; margin-top: 20px;")
-        sidebar_layout.addWidget(sim_label)
+        # Move buttons downward with spacing
+        sim_container = QWidget()
+        sim_layout = QVBoxLayout(sim_container)
+        sim_layout.setContentsMargins(0, 5, 0, 0) # Reduced top margin from 20px to 5px
+        sim_layout.setSpacing(8)
 
-        self.btn_idle = QPushButton("Normal Activity")
+        sim_label = QLabel("Threat Simulation")
+        sim_label.setStyleSheet("font-size: 11px; color: #9DA7B3; font-weight: bold; margin-bottom: 8px; letter-spacing: 0.5px; text-transform: uppercase;")
+        sim_layout.addWidget(sim_label)
+
+        self.btn_idle = QPushButton("🔵  Normal Environment")
         self.btn_idle.clicked.connect(lambda: backend.set_scenario("IDLE"))
-        sidebar_layout.addWidget(self.btn_idle)
+        self.btn_idle.setStyleSheet("background-color: #2563EB; border: none; text-align: left; padding-left: 15px;")
+        sim_layout.addWidget(self.btn_idle)
 
-        self.btn_unzip = QPushButton("Large Unzip")
-        self.btn_unzip.clicked.connect(lambda: backend.set_scenario("UNZIP"))
-        sidebar_layout.addWidget(self.btn_unzip)
-
-        self.btn_update = QPushButton("Software Update")
-        self.btn_update.clicked.connect(lambda: backend.set_scenario("SOFTWARE_UPDATE"))
-        sidebar_layout.addWidget(self.btn_update)
-
-        self.btn_attack = QPushButton("Ransomware Attack")
+        self.btn_attack = QPushButton("🔴  Simulate Ransomware")
         self.btn_attack.clicked.connect(lambda: backend.set_scenario("ATTACK"))
-        self.btn_attack.setStyleSheet("color: #FF5252;")
-        sidebar_layout.addWidget(self.btn_attack)
+        self.btn_attack.setStyleSheet("background-color: #DC2626; border: none; font-weight: bold; text-align: left; padding-left: 15px;")
+        sim_layout.addWidget(self.btn_attack)
+        
+        sidebar_layout.addWidget(sim_container)
 
-        sidebar_layout.addStretch()
+        # Divider 2
+        line2 = QFrame()
+        line2.setFrameShape(QFrame.HLine)
+        line2.setFrameShadow(QFrame.Sunken)
+        line2.setStyleSheet("background-color: #ffffff; margin-top: 16px; margin-bottom: 16px;")
+        line2.setFixedHeight(1)
+        sidebar_layout.addWidget(line2)
         
         # Action Buttons
         self.btn_scan = QPushButton("START SCAN")
@@ -98,7 +108,10 @@ class MainWindow(QMainWindow):
 
         self.btn_clear = QPushButton("Clear Logs")
         self.btn_clear.clicked.connect(self.clear_logs)
+        self.btn_clear.setStyleSheet("background-color: #6B7280; color: white; border: none;")
         sidebar_layout.addWidget(self.btn_clear)
+
+        sidebar_layout.addStretch()
 
         self.main_layout.addWidget(self.sidebar)
 
@@ -138,22 +151,29 @@ class MainWindow(QMainWindow):
         if not backend.scanning:
             backend.start_scan()
             self.btn_scan.setText("STOP SCAN")
-            self.btn_scan.setStyleSheet("background-color: #C62828;")
+            self.btn_scan.setStyleSheet("background-color: #DC2626; color: white;")
         else:
             backend.stop_scan()
             self.btn_scan.setText("START SCAN")
-            self.btn_scan.setStyleSheet("")
+            self.btn_scan.setStyleSheet("") # Revert to stylesheet (Green)
             self.dashboard_page.reset_ui()
             self.alert_shown = False
+            
+            # Manually update logs to show "Scan Stopped"
+            logs = backend.get_recent_logs()
+            self.log_list.clear() # Clear main logs list
+            self.log_list.addItems(logs[::-1]) # Add updated logs
+            self.dashboard_page.incident_panel.update_logs(logs) # Update dashboard panel
 
     def clear_logs(self):
         backend.clear_logs()
-        self.log_list.clear()
+        self.log_list.clear() # Clear main logs page
+        self.dashboard_page.incident_panel.update_logs([]) # Clear dashboard incident panel
 
     def on_data_received(self, risk, metrics, logs):
-        self.dashboard_page.update_ui(risk, metrics)
+        self.dashboard_page.update_ui(risk, metrics, logs)
         
-        # Update logs list
+        # Update logs list (main logs page)
         self.log_list.clear()
         self.log_list.addItems(logs[::-1])
 

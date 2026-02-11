@@ -82,7 +82,7 @@ def run_dashboard(
         footer = f"{Fore.CYAN}╚══════════════════════════════════════════╝{Style.RESET_ALL}"
 
         print(header)
-        print(f"{Fore.CYAN}║{Style.RESET_ALL}       K A V A C H - R   Dashboard       {Fore.CYAN}║{Style.RESET_ALL}")
+        print(f"{Fore.CYAN}║{Style.RESET_ALL}       {Fore.MAGENTA}K A{Style.RESET_ALL} {Fore.WHITE}V A{Style.RESET_ALL} {Fore.GREEN}C H{Style.RESET_ALL} - R   Dashboard       {Fore.CYAN}║{Style.RESET_ALL}")
         print(footer)
         print()
         print(f"  Risk Score  : {score:.4f}  {_bar(score)}")
