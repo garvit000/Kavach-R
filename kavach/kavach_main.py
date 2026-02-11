@@ -85,7 +85,8 @@ def cmd_train(args: argparse.Namespace) -> None:
             features = engine.extract_features()
             samples.append(features)
 
-        monitor_start(callback=_on_event)
+        watch_paths = args.watch_paths or None
+        monitor_start(callback=_on_event, paths=watch_paths)
         time.sleep(duration)
         collecting = False
         logger.info("Collection finished.  %d samples captured.", len(samples))
@@ -160,7 +161,8 @@ def cmd_detect(args: argparse.Namespace) -> None:
 
     logger.info("Starting real-time detection …  Press Ctrl+C to stop.")
     try:
-        monitor_start(callback=_on_event)
+        watch_paths = args.watch_paths or None
+        monitor_start(callback=_on_event, paths=watch_paths)
         # Keep the main thread alive
         while True:
             time.sleep(1)
@@ -231,6 +233,12 @@ def build_parser() -> argparse.ArgumentParser:
         default=0.05,
         help="IsolationForest contamination parameter (default: 0.05).",
     )
+    train_p.add_argument(
+        "--watch-paths",
+        nargs="+",
+        default=None,
+        help="Directories to watch (default: home directory).",
+    )
 
     # -- detect --
     detect_p = sub.add_parser("detect", help="Start real-time detection.")
@@ -250,6 +258,12 @@ def build_parser() -> argparse.ArgumentParser:
         type=float,
         default=0.0,
         help="Anomaly score threshold (default: 0.0).",
+    )
+    detect_p.add_argument(
+        "--watch-paths",
+        nargs="+",
+        default=None,
+        help="Directories to watch (default: home directory).",
     )
 
     return parser
