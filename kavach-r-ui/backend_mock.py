@@ -23,11 +23,12 @@ class BackendMock:
         self.risk_score = 0.0
         self.add_log("Scan stopped.")
 
-    def get_current_risk_score(self):
+    def get_current_risk_score(self, metrics=None):
         if not self.scanning:
             return 0.0
         
-        metrics = self.get_activity_metrics()
+        if metrics is None:
+            metrics = self.get_activity_metrics()
         
         # Corrected Logic for Accuracy & False Positive Reduction:
         # 1. Extension changes carry the most weight, BUT we filter for suspicious ones.
@@ -60,6 +61,15 @@ class BackendMock:
         self.risk_score = round(min(1.0, malicious_weight), 4)
         return self.risk_score
 
+    def get_risk_and_metrics(self):
+        if not self.scanning:
+            metrics = self.get_activity_metrics()
+            return 0.0, metrics
+        
+        metrics = self.get_activity_metrics()
+        risk = self.get_current_risk_score(metrics)
+        return risk, metrics
+
     def get_activity_metrics(self):
         if not self.scanning:
             return {
@@ -70,7 +80,8 @@ class BackendMock:
                 "unique_files_per_min": 0,
                 "mod_acc_ratio": 0.0,
                 "cpu_usage": 0.0,
-                "file_handles": 0
+                "file_handles": 0,
+                "scenario": self.scenario
             }
         
         if self.scenario == "IDLE":
@@ -82,7 +93,8 @@ class BackendMock:
                 "unique_files_per_min": random.randint(1, 5),
                 "mod_acc_ratio": round(random.uniform(0.05, 0.15), 2),
                 "cpu_usage": round(random.uniform(0.5, 3.0), 1),
-                "file_handles": random.randint(10, 50)
+                "file_handles": random.randint(10, 50),
+                "scenario": self.scenario
             }
         elif self.scenario == "UNZIP":
             res = {
@@ -93,7 +105,8 @@ class BackendMock:
                 "unique_files_per_min": random.randint(150, 450),
                 "mod_acc_ratio": 0.9,
                 "cpu_usage": round(random.uniform(10.0, 25.0), 1),
-                "file_handles": random.randint(50, 150)
+                "file_handles": random.randint(50, 150),
+                "scenario": self.scenario
             }
         elif self.scenario == "SOFTWARE_UPDATE":
             # Very high activity, high CPU, renames happening, but NO extension randomization
@@ -105,7 +118,8 @@ class BackendMock:
                 "unique_files_per_min": random.randint(300, 800),
                 "mod_acc_ratio": 0.85,
                 "cpu_usage": round(random.uniform(40.0, 85.0), 1),
-                "file_handles": random.randint(400, 1200)
+                "file_handles": random.randint(400, 1200),
+                "scenario": self.scenario
             }
         else: # ATTACK
             res = {
@@ -116,7 +130,8 @@ class BackendMock:
                 "unique_files_per_min": random.randint(400, 1500),
                 "mod_acc_ratio": 0.98,
                 "cpu_usage": round(random.uniform(50.0, 98.0), 1),
-                "file_handles": random.randint(800, 3000)
+                "file_handles": random.randint(800, 3000),
+                "scenario": self.scenario
             }
         
         self.current_metrics = res

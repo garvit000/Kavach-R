@@ -37,6 +37,14 @@ class RiskGraph(FigureCanvas):
         self.axes.set_xlim(min(self.x_data), max(self.x_data) if len(self.x_data) > 1 else 10)
         self.draw()
 
+    def reset_graph(self):
+        self.x_data = []
+        self.y_data = []
+        self.line.set_data([], [])
+        self.axes.set_xlim(0, 10)
+        self.axes.set_ylim(0, 1)
+        self.draw()
+
 class DashboardWidget(QWidget):
     def __init__(self):
         super().__init__()
@@ -134,15 +142,25 @@ class DashboardWidget(QWidget):
         self.metric_cpu.value_label.setText(str(metrics["cpu_usage"]))
         self.metric_handles.value_label.setText(str(metrics["file_handles"]))
         
-        if risk < 0.5:
+        scenario = metrics.get("scenario", "IDLE")
+        
+        if scenario == "IDLE":
             self.status_val.setText("SAFE")
-            self.status_val.setStyleSheet("background-color: #2E7D32; color: white;")
-        elif risk < 0.8:
-            self.status_val.setText("WARNING")
-            self.status_val.setStyleSheet("background-color: #EF6C00; color: white;")
+            self.status_val.setStyleSheet("background-color: #2E7D32; color: white; border: 2px solid #2E7D32;")
+        elif scenario == "UNZIP":
+            self.status_val.setText("LOAD: FILE EXTRACTION")
+            # Red highlight as requested
+            self.status_val.setStyleSheet("background-color: #C62828; color: white; border: 2px solid white;")
+        elif scenario == "SOFTWARE_UPDATE":
+            self.status_val.setText("LOAD: SOFTWARE UPDATE")
+            # Red highlight as requested
+            self.status_val.setStyleSheet("background-color: #C62828; color: white; border: 2px solid white;")
+        elif scenario == "ATTACK":
+            self.status_val.setText("CRITICAL: RANSOMWARE")
+            self.status_val.setStyleSheet("background-color: #D32F2F; color: white; border: 3px solid #FFCDD2;")
         else:
-            self.status_val.setText("CRITICAL")
-            self.status_val.setStyleSheet("background-color: #C62828; color: white;")
+            self.status_val.setText("UNKNOWN")
+            self.status_val.setStyleSheet("background-color: #424242; color: white;")
 
     def reset_ui(self):
         self.score_val.setText("0.00")
@@ -157,4 +175,4 @@ class DashboardWidget(QWidget):
         self.metric_ratio.value_label.setText("0.0")
         self.metric_cpu.value_label.setText("0.0")
         self.metric_handles.value_label.setText("0")
-        # Clear graph data? (Line will restart)
+        self.canvas.reset_graph()

@@ -19,8 +19,7 @@ class UpdateThread(QThread):
     def run(self):
         while self._running:
             if backend.scanning:
-                risk = backend.get_current_risk_score()
-                metrics = backend.get_activity_metrics()
+                risk, metrics = backend.get_risk_and_metrics()
                 logs = backend.get_recent_logs()
                 self.data_received.emit(risk, metrics, logs)
             self.msleep(1000)
@@ -158,8 +157,10 @@ class MainWindow(QMainWindow):
         self.log_list.clear()
         self.log_list.addItems(logs[::-1])
 
-        # Check for Critical Alert
-        if risk > 0.8 and not self.alert_shown:
+        scenario = metrics.get("scenario", "IDLE")
+
+        # Check for Critical Alert - ONLY trigger on actual attack scenario
+        if scenario == "ATTACK" and risk > 0.8 and not self.alert_shown:
             self.alert_shown = True
             QMessageBox.critical(
                 self, 
