@@ -194,79 +194,87 @@ class RealBackend:
         # Run through the detector
         alert = self._detector.process_event(event)
 
+        # --- Phase 1: compute risk (fast, inside lock) ---
+        should_flag = False
+        raw_score = 0.0
+        current_risk = 0.0
+
         with self._lock:
             if alert is not None:
                 raw_score = alert["score"]
                 self._last_score = raw_score
                 self._consecutive_alerts += 1
 
-                # Map to 0-1 risk: steeper curve so attacks hit hard
-                # score=-0.5 → risk=0.3, score=-0.7 → risk=0.8, score=-1.0 → risk=1.0
-                distance = self.threshold - raw_score  # positive = anomalous
+                distance = self.threshold - raw_score
                 instant_risk = max(0.0, min(1.0, 0.3 + distance * 2.5))
             else:
                 instant_risk = 0.02
-                # Decrement consecutive counter — don't hard-reset,
-                # background events shouldn't completely break attack detection
                 self._consecutive_alerts = max(0, self._consecutive_alerts - 2)
 
-            # Dual-speed EMA
             alpha = self._EMA_ALPHA_FAST if instant_risk > self._smoothed_risk else self._EMA_ALPHA_SLOW
             self._smoothed_risk = alpha * instant_risk + (1 - alpha) * self._smoothed_risk
             self.risk_score = round(max(0.0, min(1.0, self._smoothed_risk)), 4)
+            current_risk = self.risk_score
 
-            # ---- Response: only act on SUSTAINED alerts ----
-            # Require _MIN_CONSECUTIVE consecutive alerts AND risk above threshold
-            # AND at least 3 seconds since last flagged entry (prevent spam)
+            # Check if we should flag (but DON'T do the I/O scan here)
             if (alert is not None
                     and self._consecutive_alerts >= self._MIN_CONSECUTIVE
                     and self.risk_score > self._FLAG_THRESHOLD
-                    and now - self._last_flag_time >= 3.0):  # Max 1 flag per 3s
-
+                    and now - self._last_flag_time >= 3.0):
+                should_flag = True
                 self._last_flag_time = now
                 self._last_alert = alert
 
-                # Find the attacking process via I/O scanning (not from watchdog PID)
-                proc_info = self._identified_attacker
-                io_scan_age = now - getattr(self, "_last_io_scan_time", 0)
-                if proc_info is None or io_scan_age > 10:
-                    proc_info = find_top_io_process()
-                    self._identified_attacker = proc_info
-                    self._last_io_scan_time = now
+        # --- Phase 2: process identification & response (OUTSIDE lock) ---
+        if should_flag:
+            # I/O scan runs WITHOUT holding the lock — won't block events
+            proc_info = self._identified_attacker
+            io_scan_age = now - getattr(self, "_last_io_scan_time", 0)
+            if proc_info is None or io_scan_age > 10:
+                logger.info("Running I/O process scan...")
+                proc_info = find_top_io_process()
+                self._identified_attacker = proc_info
+                self._last_io_scan_time = now
+                if proc_info:
+                    logger.info("Identified attacker: pid=%d name=%s exe=%s",
+                                proc_info.pid, proc_info.name, proc_info.exe)
+                else:
+                    logger.warning("I/O scan found no suspicious process")
 
-                pid = proc_info.pid if proc_info else None
+            pid = proc_info.pid if proc_info else None
 
-                # Determine response tier
-                status = "Flagged"
-                if self.risk_score > self._CRITICAL_THRESHOLD and pid and pid not in self._killed_pids:
-                    if kill_process(pid):
-                        status = "KILLED"
+            # Determine response tier
+            status = "Flagged"
+            if current_risk > self._CRITICAL_THRESHOLD and pid and pid not in self._killed_pids:
+                if kill_process(pid):
+                    status = "KILLED"
+                    with self._lock:
                         self._killed_pids.add(pid)
                         self.logs.append(
                             f"[{datetime.now().strftime('%H:%M:%S')}] "
-                            f"🛑 KILLED process PID={pid} ({proc_info.name})  risk={self.risk_score:.2f}"
+                            f"🛑 KILLED process PID={pid} ({proc_info.name})  risk={current_risk:.2f}"
                         )
-                    else:
-                        status = "Kill Failed"
+                else:
+                    status = "Kill Failed"
 
-                record = {
-                    "timestamp": datetime.now().strftime("%H:%M:%S"),
-                    "pid": pid or "N/A",
-                    "name": proc_info.name if proc_info else "Unknown",
-                    "exe": proc_info.exe if proc_info else "N/A",
-                    "score": round(raw_score, 4),
-                    "risk": self.risk_score,
-                    "features": alert.get("features", {}),
-                    "status": status,
-                }
+            record = {
+                "timestamp": datetime.now().strftime("%H:%M:%S"),
+                "pid": pid or "N/A",
+                "name": proc_info.name if proc_info else "Unknown",
+                "exe": proc_info.exe if proc_info else "N/A",
+                "score": round(raw_score, 4),
+                "risk": current_risk,
+                "features": alert.get("features", {}) if alert else {},
+                "status": status,
+            }
+
+            with self._lock:
                 self._flagged_processes.append(record)
-
-                # Always log when we flag (already throttled by 3s gate above)
                 emoji = "🛑" if status == "KILLED" else "⚠"
                 self.logs.append(
                     f"[{record['timestamp']}] "
                     f"{emoji} {status}  pid={record['pid']}  {record['name']}  "
-                    f"score={raw_score:.4f}  risk={self.risk_score:.2f}"
+                    f"score={raw_score:.4f}  risk={current_risk:.2f}"
                 )
 
     # ------------------------------------------------------------------

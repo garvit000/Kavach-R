@@ -102,7 +102,7 @@ def kill_process(pid: int) -> bool:
 def find_top_io_process() -> ProcessInfo | None:
     """Find the process currently doing the most disk write I/O.
 
-    Takes two snapshots 0.3s apart and returns the process with the
+    Takes two snapshots 0.5s apart and returns the process with the
     highest write_bytes delta.  Ignores system processes and the
     current Python process.
 
@@ -111,16 +111,20 @@ def find_top_io_process() -> ProcessInfo | None:
     try:
         import psutil  # type: ignore[import-not-found]
     except ImportError:
+        logger.error("psutil not installed — cannot scan I/O")
         return None
 
     import os as _os
+    import time as _time
+
     my_pid = _os.getpid()
     IGNORE_NAMES = {"System", "svchost.exe", "MsMpEng.exe", "SearchIndexer.exe",
                     "csrss.exe", "smss.exe", "wininit.exe", "services.exe",
-                    "lsass.exe", "RuntimeBroker.exe", "dwm.exe"}
+                    "lsass.exe", "RuntimeBroker.exe", "dwm.exe", "explorer.exe"}
 
     # Snapshot 1: record write_bytes for each process
     snap1: dict[int, int] = {}
+    errors = 0
     for proc in psutil.process_iter(["pid", "name"]):
         try:
             if proc.pid in (0, 4, my_pid):
@@ -131,11 +135,13 @@ def find_top_io_process() -> ProcessInfo | None:
             io = proc.io_counters()
             snap1[proc.pid] = io.write_bytes
         except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+            errors += 1
             continue
 
-    # Wait briefly
-    import time as _time
-    _time.sleep(0.3)
+    logger.debug("I/O scan: snapshot 1 captured %d processes (%d errors)", len(snap1), errors)
+
+    # Wait to accumulate I/O delta
+    _time.sleep(0.5)
 
     # Snapshot 2: find highest delta
     best_pid = None
@@ -151,7 +157,9 @@ def find_top_io_process() -> ProcessInfo | None:
         except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
             continue
 
-    if best_pid is not None and best_delta > 10_000:  # >10KB written
+    logger.debug("I/O scan: best_pid=%s best_delta=%d bytes", best_pid, best_delta)
+
+    if best_pid is not None and best_delta > 1_000:  # >1KB written in 0.5s
         return get_process_info(best_pid)
 
     return None

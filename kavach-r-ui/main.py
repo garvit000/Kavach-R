@@ -603,7 +603,22 @@ class MainWindow(QMainWindow):
 
     def toggle_scan(self):
         if not self.backend.scanning:
+            # Check if model exists before starting scan
+            model_path = getattr(self.backend, "model_path", None)
+            if model_path and not model_path.exists():
+                from PySide6.QtWidgets import QMessageBox
+                QMessageBox.warning(
+                    self,
+                    "Model Not Trained",
+                    "No trained model found.\n\n"
+                    "Please go to 'Train Model' first and train for at least "
+                    "60-120 seconds of normal activity before starting a scan.",
+                )
+                return
             self.backend.start_scan()
+            if not self.backend.scanning:
+                # start_scan failed (logged internally)
+                return
             self.btn_scan.setText("STOP SCAN")
             self.btn_scan.setStyleSheet("background-color: #DC2626; color: white;")
         else:
