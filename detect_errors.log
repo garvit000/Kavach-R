@@ -191,3 +191,273 @@
 2026-02-11 20:10:03,147 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
 2026-02-11 20:10:21,877 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
 2026-02-11 20:10:21,880 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 20:10:48,858 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 20:10:48,861 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 20:11:12,518 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 20:11:12,520 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 20:11:36,371 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 20:11:36,373 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 20:12:00,944 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 20:12:00,946 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 20:12:23,593 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 20:12:23,595 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 20:12:47,416 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 20:12:47,417 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 20:13:11,779 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 20:13:11,780 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 20:13:34,736 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 4.73077925354849}
+2026-02-11 20:13:34,739 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 20:13:57,277 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 5.173716196361646}
+2026-02-11 20:13:57,280 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 20:14:21,531 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 20:14:21,534 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 20:14:47,030 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 20:14:47,031 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 20:15:10,754 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 20:15:10,766 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 20:15:33,518 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 20:15:33,520 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 20:15:52,045 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=23316  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 5.61183459178131}
+2026-02-11 20:15:52,047 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=23316  score=-0.5000
+2026-02-11 20:16:14,672 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 5.26532189002956}
+2026-02-11 20:16:14,675 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 20:16:33,755 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=23316  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0905602561507182}
+2026-02-11 20:16:33,757 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=23316  score=-0.5000
+2026-02-11 20:16:56,653 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 20:16:56,656 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 20:17:19,332 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 20:17:19,334 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 20:17:22,257 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=5344  score=-0.5000  features={'files_modified_per_sec': 0.6920537723436813, 'rename_rate': 0.0, 'unique_files_touched': 2.0, 'extension_change_rate': 0.0, 'entropy_change': 5.235928140461408}
+2026-02-11 20:17:22,258 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=5344  score=-0.5000
+2026-02-11 20:17:25,218 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=5344  score=-0.5000  features={'files_modified_per_sec': 0.6740815621358833, 'rename_rate': 0.0, 'unique_files_touched': 2.0, 'extension_change_rate': 0.0, 'entropy_change': 5.345959241367977}
+2026-02-11 20:17:25,220 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=5344  score=-0.5000
+2026-02-11 20:17:45,679 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 20:17:45,680 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 20:18:06,549 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 20:18:06,552 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 20:18:24,149 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 20:18:24,150 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 20:18:39,977 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 20:18:39,978 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 20:18:56,267 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 20:18:56,269 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 20:19:11,722 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 1000.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 20:19:11,723 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 20:19:27,472 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 1000.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 20:19:27,474 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 20:19:48,450 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 4.675682791205425}
+2026-02-11 20:19:48,451 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 20:20:11,546 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 20:20:11,548 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 20:20:35,040 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 20:20:35,043 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 20:20:58,733 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 20:20:58,735 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 20:21:23,100 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 20:21:23,102 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 20:21:46,787 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 20:21:46,789 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 20:22:09,927 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 20:22:09,930 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 20:22:29,341 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 20:22:29,342 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 20:22:45,563 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 5.410634315903805}
+2026-02-11 20:22:45,565 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 20:23:01,950 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 20:23:01,952 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 20:23:18,150 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 20:23:18,152 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 20:23:34,347 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 20:23:34,349 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 20:23:37,144 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=7256  score=-0.5000  features={'files_modified_per_sec': 0.7193820211951905, 'rename_rate': 0.0, 'unique_files_touched': 2.0, 'extension_change_rate': 0.0, 'entropy_change': 2.3211432704063477}
+2026-02-11 20:23:37,146 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=7256  score=-0.5000
+2026-02-11 20:23:45,044 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=14144  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 20:23:45,046 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=14144  score=-0.5000
+2026-02-11 20:23:52,805 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=14144  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 20:23:52,807 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=14144  score=-0.5000
+2026-02-11 20:24:00,439 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=14144  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 20:24:00,441 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=14144  score=-0.5000
+2026-02-11 21:30:52,561 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:30:52,562 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:31:15,068 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:31:15,071 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:31:37,455 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:31:37,456 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:31:59,241 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:31:59,242 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:32:20,277 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:32:20,279 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:32:40,811 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:32:40,814 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:33:01,774 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 4.797321945952865}
+2026-02-11 21:33:01,776 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:33:22,457 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:33:22,458 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:33:42,853 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:33:42,854 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:34:03,525 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:34:03,527 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:34:24,085 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 1000.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:34:24,087 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:34:44,454 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:34:44,455 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:35:04,951 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:35:04,954 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:35:25,627 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 2.4492407713156563}
+2026-02-11 21:35:25,627 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:35:46,182 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:35:46,184 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:36:06,685 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:36:06,687 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:36:26,923 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 5.005934689423779}
+2026-02-11 21:36:26,924 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:36:47,229 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:36:47,231 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:37:07,660 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:37:07,661 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:37:27,989 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 4.678280801812205}
+2026-02-11 21:37:27,992 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:37:48,207 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:37:48,207 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:38:09,010 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:38:09,012 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:38:29,722 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:38:29,723 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:38:50,408 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:38:50,410 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:39:10,813 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:39:10,816 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:39:31,463 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:39:31,465 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:39:52,006 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 1000.0, 'unique_files_touched': 1.0, 'extension_change_rate': 1.0, 'entropy_change': 0.0}
+2026-02-11 21:39:52,007 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:40:12,745 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:40:12,746 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:40:32,620 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 1000.0, 'unique_files_touched': 1.0, 'extension_change_rate': 1.0, 'entropy_change': 0.0}
+2026-02-11 21:40:32,622 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:40:53,335 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 1000.0, 'unique_files_touched': 1.0, 'extension_change_rate': 1.0, 'entropy_change': 0.0}
+2026-02-11 21:40:53,338 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:41:13,919 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 1000.0, 'unique_files_touched': 1.0, 'extension_change_rate': 1.0, 'entropy_change': 0.0}
+2026-02-11 21:41:13,922 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:41:35,336 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:41:35,338 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:41:57,247 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 1000.0, 'unique_files_touched': 1.0, 'extension_change_rate': 1.0, 'entropy_change': 0.0}
+2026-02-11 21:41:57,249 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:42:18,189 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:42:18,190 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:42:38,688 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 1000.0, 'unique_files_touched': 1.0, 'extension_change_rate': 1.0, 'entropy_change': 0.0}
+2026-02-11 21:42:38,689 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:42:59,018 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:42:59,019 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:43:19,879 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 5.282605805979893}
+2026-02-11 21:43:19,880 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:43:40,097 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:43:40,100 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:44:00,726 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 1000.0, 'unique_files_touched': 1.0, 'extension_change_rate': 1.0, 'entropy_change': 0.0}
+2026-02-11 21:44:00,728 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:44:21,072 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:44:21,075 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:44:41,775 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:44:41,777 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:44:57,874 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:44:57,876 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:45:14,176 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:45:14,177 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:45:30,446 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 1000.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:45:30,447 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:45:46,635 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:45:46,637 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:46:02,939 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:46:02,941 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:46:19,265 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:46:19,266 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:46:35,316 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 1000.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:46:35,318 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:46:51,794 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:46:51,795 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:47:09,082 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:47:09,085 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:47:25,801 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:47:25,803 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:47:41,978 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 1000.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:47:41,980 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:47:58,199 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 1000.0, 'unique_files_touched': 1.0, 'extension_change_rate': 1.0, 'entropy_change': 0.0}
+2026-02-11 21:47:58,201 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:48:14,749 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:48:14,751 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:48:31,056 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 1000.0, 'unique_files_touched': 1.0, 'extension_change_rate': 1.0, 'entropy_change': 0.0}
+2026-02-11 21:48:31,058 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:48:47,326 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:48:47,328 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:49:03,631 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 4.797321945952865}
+2026-02-11 21:49:03,633 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:49:19,815 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 1000.0, 'unique_files_touched': 1.0, 'extension_change_rate': 1.0, 'entropy_change': 0.0}
+2026-02-11 21:49:19,817 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:49:36,035 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 1000.0, 'unique_files_touched': 1.0, 'extension_change_rate': 1.0, 'entropy_change': 0.0}
+2026-02-11 21:49:36,037 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:49:52,565 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 5.106478454894282}
+2026-02-11 21:49:52,565 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:50:08,814 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 1000.0, 'unique_files_touched': 1.0, 'extension_change_rate': 1.0, 'entropy_change': 0.0}
+2026-02-11 21:50:08,817 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:50:25,893 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:50:25,895 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:50:42,961 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 1000.0, 'unique_files_touched': 1.0, 'extension_change_rate': 1.0, 'entropy_change': 0.0}
+2026-02-11 21:50:42,963 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:50:59,984 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:50:59,986 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:51:19,505 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 1000.0, 'unique_files_touched': 1.0, 'extension_change_rate': 1.0, 'entropy_change': 0.0}
+2026-02-11 21:51:19,507 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:51:37,179 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:51:37,181 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:51:55,979 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 1000.0, 'unique_files_touched': 1.0, 'extension_change_rate': 1.0, 'entropy_change': 0.0}
+2026-02-11 21:51:55,981 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:52:16,355 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:52:16,357 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:52:35,219 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 1000.0, 'unique_files_touched': 1.0, 'extension_change_rate': 1.0, 'entropy_change': 0.0}
+2026-02-11 21:52:35,221 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:52:53,308 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:52:53,311 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:53:14,801 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 1000.0, 'unique_files_touched': 1.0, 'extension_change_rate': 1.0, 'entropy_change': 0.0}
+2026-02-11 21:53:14,803 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:53:34,469 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:53:34,471 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:53:51,411 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 1000.0, 'unique_files_touched': 1.0, 'extension_change_rate': 1.0, 'entropy_change': 0.0}
+2026-02-11 21:53:51,414 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:54:12,946 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:54:12,948 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:54:33,577 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 1000.0, 'unique_files_touched': 1.0, 'extension_change_rate': 1.0, 'entropy_change': 0.0}
+2026-02-11 21:54:33,579 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:54:54,295 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:54:54,297 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:55:14,362 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 1000.0, 'unique_files_touched': 1.0, 'extension_change_rate': 1.0, 'entropy_change': 0.0}
+2026-02-11 21:55:14,364 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:55:34,013 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 1000.0, 'unique_files_touched': 1.0, 'extension_change_rate': 1.0, 'entropy_change': 0.0}
+2026-02-11 21:55:34,014 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:55:54,620 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 1000.0, 'unique_files_touched': 1.0, 'extension_change_rate': 1.0, 'entropy_change': 0.0}
+2026-02-11 21:55:54,622 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:56:13,723 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:56:13,723 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:56:31,134 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 1000.0, 'unique_files_touched': 1.0, 'extension_change_rate': 1.0, 'entropy_change': 0.0}
+2026-02-11 21:56:31,136 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:56:48,056 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:56:48,058 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:57:05,612 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 1000.0, 'unique_files_touched': 1.0, 'extension_change_rate': 1.0, 'entropy_change': 0.0}
+2026-02-11 21:57:05,613 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:57:25,279 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:57:25,280 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:57:45,154 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:57:45,155 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:58:02,932 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:58:02,933 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:58:22,689 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:58:22,691 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:58:43,132 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 1000.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:58:43,134 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:59:03,224 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:59:03,226 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:59:21,059 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 1000.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:59:21,060 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:59:39,792 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 0.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:59:39,794 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000
+2026-02-11 21:59:57,182 [WARNING] kavach.detector: \U0001f6a8 ANOMALY DETECTED  pid=None  score=-0.5000  features={'files_modified_per_sec': 0.0, 'rename_rate': 1000.0, 'unique_files_touched': 1.0, 'extension_change_rate': 0.0, 'entropy_change': 0.0}
+2026-02-11 21:59:57,185 [WARNING] kavach: \U0001f6a8 HIGH-RISK ACTIVITY  pid=None  score=-0.5000

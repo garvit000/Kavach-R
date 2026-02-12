@@ -41,7 +41,7 @@ class Detector:
         model_path: str | Path,
         window_size: float = 15.0,
         threshold: float = -0.5,
-        min_events: int = 10,
+        min_events: int = 5,
     ) -> None:
         self.threshold = threshold
         self.min_events = min_events

@@ -159,7 +159,7 @@ def find_top_io_process() -> ProcessInfo | None:
 
     logger.debug("I/O scan: best_pid=%s best_delta=%d bytes", best_pid, best_delta)
 
-    if best_pid is not None and best_delta > 1_000:  # >1KB written in 0.5s
+    if best_pid is not None and best_delta > 100:  # >100B written in 0.5s
         return get_process_info(best_pid)
 
     return None

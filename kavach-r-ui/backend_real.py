@@ -166,13 +166,13 @@ class RealBackend:
     # Internal: event callback from the monitor
     # ------------------------------------------------------------------
 
-    _EMA_ALPHA_FAST = 0.5     # Fast ramp-up during attacks
+    _EMA_ALPHA_FAST = 0.7     # Fast ramp-up during attacks
     _EMA_ALPHA_SLOW = 0.08    # Slow decay back to safe
     _LOG_THROTTLE_SEC = 5.0
-    _WARMUP_SEC = 15.0
+    _WARMUP_SEC = 2.0
     _FLAG_THRESHOLD = 0.50
-    _CRITICAL_THRESHOLD = 0.85
-    _MIN_CONSECUTIVE = 3      # 3+ consecutive alerts before flagging
+    _CRITICAL_THRESHOLD = 0.75
+    _MIN_CONSECUTIVE = 2      # 3+ consecutive alerts before flagging
 
     def _on_event(self, event: FileEvent) -> None:
         """Called by kavach.monitor for every file-system event."""
@@ -245,7 +245,12 @@ class RealBackend:
 
             # Determine response tier
             status = "Flagged"
-            if current_risk > self._CRITICAL_THRESHOLD and pid and pid not in self._killed_pids:
+            features = alert.get("features", {}) if alert else {}
+            high_rename_risk = (
+                features.get("extension_change_rate", 0.0) >= 0.6
+                and features.get("rename_rate", 0.0) >= 1.0
+            )
+            if (current_risk > self._CRITICAL_THRESHOLD or high_rename_risk) and pid and pid not in self._killed_pids:
                 if kill_process(pid):
                     status = "KILLED"
                     with self._lock:
