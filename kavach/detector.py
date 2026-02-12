@@ -39,9 +39,9 @@ class Detector:
     def __init__(
         self,
         model_path: str | Path,
-        window_size: float = 10.0,
-        threshold: float = -0.3,
-        min_events: int = 5,
+        window_size: float = 15.0,
+        threshold: float = -0.5,
+        min_events: int = 10,
     ) -> None:
         self.threshold = threshold
         self.min_events = min_events

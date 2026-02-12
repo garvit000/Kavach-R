@@ -366,8 +366,11 @@ class DashboardWidget(QWidget):
             self.status_val.setStyleSheet("background-color: #7F1D1D; color: #EF4444; padding: 4px 12px; border-radius: 4px; font-weight: bold; font-size: 11px;")
             self.threat_card.update_threats("CRITICAL", threat_details)
             
-            # Response Badge
-            self.response_badge.setText("Threat Flagged")
+            # Response Badge — show actual action taken
+            action = "Threat Flagged"
+            if threat_details and threat_details.get("action_taken") == "Process Terminated":
+                action = "Process Terminated"
+            self.response_badge.setText(action)
             self.response_badge.setStyleSheet("background-color: #EF4444; color: #FFF; padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 12px;")
         
         else: # Legacy/Other

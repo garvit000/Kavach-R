@@ -33,7 +33,7 @@ class KavachModel:
 
     def __init__(
         self,
-        contamination: float = 0.05,
+        contamination: float = 0.20,
         random_state: int = 42,
     ) -> None:
         self.contamination = contamination
