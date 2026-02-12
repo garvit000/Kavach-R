@@ -544,17 +544,29 @@ class MainWindow(QMainWindow):
             return
 
         records = self.backend.get_flagged_processes()
-        self.process_table.setRowCount(len(records))
+
+        # Only rebuild table when new entries arrive
+        if len(records) == getattr(self, "_last_proc_count", -1):
+            return
+        self._last_proc_count = len(records)
+
+        # Show last 50 entries max (newest first)
+        display = list(reversed(records))[:50]
+
+        self.process_table.setRowCount(len(display))
         self.process_count_label.setText(
             f"{len(records)} flagged process{'es' if len(records) != 1 else ''}"
             if records else "No flagged processes yet."
         )
 
-        for row, rec in enumerate(reversed(records)):  # newest first
+        for row, rec in enumerate(display):
             risk = rec.get("risk", 0)
 
-            # Pick row color based on risk
-            if risk >= 0.7:
+            # Pick row color based on risk/status
+            status = rec.get("status", "")
+            if status == "KILLED":
+                row_color = QColor(127, 29, 29, 120)   # bright red
+            elif risk >= 0.7:
                 row_color = QColor(127, 29, 29, 80)   # dark red
             elif risk >= 0.4:
                 row_color = QColor(120, 53, 15, 80)    # dark amber
@@ -568,7 +580,7 @@ class MainWindow(QMainWindow):
                 rec.get("exe", "N/A"),
                 str(rec.get("score", "")),
                 f"{risk:.2f}",
-                rec.get("status", "Flagged"),
+                status or "Flagged",
             ]
             for col, text in enumerate(items):
                 item = QTableWidgetItem(text)

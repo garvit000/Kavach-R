@@ -24,7 +24,7 @@ from kavach.detector import Detector
 from kavach.events import FileEvent
 from kavach.feature_engine import FeatureEngine
 from kavach.monitor import start as monitor_start, stop as monitor_stop
-from kavach.process_monitor import get_process_info, kill_process
+from kavach.process_monitor import get_process_info, kill_process, find_top_io_process
 
 logger = logging.getLogger("kavach.backend_real")
 
@@ -68,6 +68,8 @@ class RealBackend:
         self._scan_start_time = 0.0
         self._consecutive_alerts = 0
         self._killed_pids: set = set()
+        self._last_flag_time = 0.0  # Throttle flagged entries
+        self._identified_attacker: object = None  # Cached attacker ProcessInfo
 
     # ------------------------------------------------------------------
     # Public API (same interface as BackendMock)
@@ -214,13 +216,25 @@ class RealBackend:
             self.risk_score = round(max(0.0, min(1.0, self._smoothed_risk)), 4)
 
             # ---- Response: only act on SUSTAINED alerts ----
-            # Require _MIN_CONSECUTIVE consecutive detector alerts AND risk above threshold
+            # Require _MIN_CONSECUTIVE consecutive alerts AND risk above threshold
+            # AND at least 3 seconds since last flagged entry (prevent spam)
             if (alert is not None
                     and self._consecutive_alerts >= self._MIN_CONSECUTIVE
-                    and self.risk_score > self._FLAG_THRESHOLD):
+                    and self.risk_score > self._FLAG_THRESHOLD
+                    and now - self._last_flag_time >= 3.0):  # Max 1 flag per 3s
 
+                self._last_flag_time = now
                 self._last_alert = alert
-                pid = alert.get("pid")
+
+                # Find the attacking process via I/O scanning (not from watchdog PID)
+                proc_info = self._identified_attacker
+                io_scan_age = now - getattr(self, "_last_io_scan_time", 0)
+                if proc_info is None or io_scan_age > 10:
+                    proc_info = find_top_io_process()
+                    self._identified_attacker = proc_info
+                    self._last_io_scan_time = now
+
+                pid = proc_info.pid if proc_info else None
 
                 # Determine response tier
                 status = "Flagged"
@@ -230,14 +244,10 @@ class RealBackend:
                         self._killed_pids.add(pid)
                         self.logs.append(
                             f"[{datetime.now().strftime('%H:%M:%S')}] "
-                            f"🛑 KILLED process PID={pid}  risk={self.risk_score:.2f}"
+                            f"🛑 KILLED process PID={pid} ({proc_info.name})  risk={self.risk_score:.2f}"
                         )
                     else:
                         status = "Kill Failed"
-
-                proc_info = None
-                if pid is not None:
-                    proc_info = get_process_info(pid)
 
                 record = {
                     "timestamp": datetime.now().strftime("%H:%M:%S"),
@@ -251,13 +261,13 @@ class RealBackend:
                 }
                 self._flagged_processes.append(record)
 
-                if now - self._last_log_time >= self._LOG_THROTTLE_SEC:
-                    self._last_log_time = now
-                    emoji = "🛑" if status == "KILLED" else "⚠"
-                    self.logs.append(
-                        f"[{record['timestamp']}] "
-                        f"{emoji} {status}  score={raw_score:.4f}  risk={self.risk_score:.2f}"
-                    )
+                # Always log when we flag (already throttled by 3s gate above)
+                emoji = "🛑" if status == "KILLED" else "⚠"
+                self.logs.append(
+                    f"[{record['timestamp']}] "
+                    f"{emoji} {status}  pid={record['pid']}  {record['name']}  "
+                    f"score={raw_score:.4f}  risk={self.risk_score:.2f}"
+                )
 
     # ------------------------------------------------------------------
     # Internal: metrics construction
@@ -285,12 +295,9 @@ class RealBackend:
 
         # If there's a recent alert, populate threat details
         if self._last_alert and self.risk_score > 0.6:
-            alert = self._last_alert
-            pid = alert.get("pid")
+            proc_info = self._identified_attacker
+            pid = proc_info.pid if proc_info else None
             was_killed = pid in self._killed_pids if pid else False
-            proc_info = None
-            if pid is not None:
-                proc_info = get_process_info(pid)
 
             metrics["scenario"] = "ATTACK"
             metrics["threat_details"] = {

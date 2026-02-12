@@ -97,3 +97,61 @@ def kill_process(pid: int) -> bool:
     except (psutil.NoSuchProcess, psutil.AccessDenied) as exc:
         logger.error("Failed to kill pid %d: %s", pid, exc)
         return False
+
+
+def find_top_io_process() -> ProcessInfo | None:
+    """Find the process currently doing the most disk write I/O.
+
+    Takes two snapshots 0.3s apart and returns the process with the
+    highest write_bytes delta.  Ignores system processes and the
+    current Python process.
+
+    Returns ``None`` if psutil is unavailable or no process found.
+    """
+    try:
+        import psutil  # type: ignore[import-not-found]
+    except ImportError:
+        return None
+
+    import os as _os
+    my_pid = _os.getpid()
+    IGNORE_NAMES = {"System", "svchost.exe", "MsMpEng.exe", "SearchIndexer.exe",
+                    "csrss.exe", "smss.exe", "wininit.exe", "services.exe",
+                    "lsass.exe", "RuntimeBroker.exe", "dwm.exe"}
+
+    # Snapshot 1: record write_bytes for each process
+    snap1: dict[int, int] = {}
+    for proc in psutil.process_iter(["pid", "name"]):
+        try:
+            if proc.pid in (0, 4, my_pid):
+                continue
+            name = proc.info.get("name", "")
+            if name in IGNORE_NAMES:
+                continue
+            io = proc.io_counters()
+            snap1[proc.pid] = io.write_bytes
+        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+            continue
+
+    # Wait briefly
+    import time as _time
+    _time.sleep(0.3)
+
+    # Snapshot 2: find highest delta
+    best_pid = None
+    best_delta = 0
+    for pid, old_bytes in snap1.items():
+        try:
+            proc = psutil.Process(pid)
+            io = proc.io_counters()
+            delta = io.write_bytes - old_bytes
+            if delta > best_delta:
+                best_delta = delta
+                best_pid = pid
+        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+            continue
+
+    if best_pid is not None and best_delta > 10_000:  # >10KB written
+        return get_process_info(best_pid)
+
+    return None

@@ -87,24 +87,13 @@ class _KavachHandler(FileSystemEventHandler):
 
 
 def _guess_pid(file_path: str) -> int | None:
-    """Best-effort PID lookup for the process that has *file_path* open.
+    """Best-effort PID lookup — disabled for performance.
 
-    Uses ``psutil`` if available.  Returns ``None`` if the PID cannot be
-    determined (this is common and perfectly acceptable).
+    The old implementation iterated every running process on each file event
+    which caused severe performance issues.  PID resolution is now handled
+    lazily by the backend when an attack is confirmed (using I/O-based
+    process scanning instead of per-event open_files lookup).
     """
-    try:
-        import psutil  # type: ignore[import-not-found]
-
-        for proc in psutil.process_iter(["pid", "open_files"]):
-            try:
-                open_files = proc.info.get("open_files") or []
-                for f in open_files:
-                    if f.path == file_path:
-                        return proc.info["pid"]
-            except (psutil.NoSuchProcess, psutil.AccessDenied):
-                continue
-    except ImportError:
-        pass
     return None
 
 
